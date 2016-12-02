@@ -99,10 +99,7 @@ class LearningAgent(Agent):
         ## TO DO ##
         ###########
         # Calculate the maximum Q-value of all actions for a given state
-
-        maxQ = 0
-        for vact in self.valid_actions:
-            maxQ = max(maxQ, self.Q[state][vact])
+        maxQ = max(self.Q[state][action] for action in self.valid_actions)
 
         return maxQ
 
@@ -125,15 +122,11 @@ class LearningAgent(Agent):
             action = random.choice(self.valid_actions)
         else:
             maxQ = self.get_maxQ(state)
-
-            bestQvalueActions = []
-
-            for vact in self.valid_actions:
-                if self.Q[state][vact] == maxQ:
-                    bestQvalueActions.append(vact)
-
+            print '==> maxQ' + str(maxQ)
+            best_actions = [action for action in self.valid_actions if self.Q[state][action] == maxQ]
+            print '==> best_actions' + str(best_actions)
             if random.random() <= 1 - self.epsilon:
-                action = random.choice(bestQvalueActions)
+                action = random.choice(best_actions)
             else:
                 action = random.choice(self.valid_actions)
 
@@ -158,20 +151,9 @@ class LearningAgent(Agent):
         if not self.learning:
             return
 
-        # Get old Q
         oldQ = self.Q[state][action]
-        new_maxQ = 0.0
 
-        # If future learning is considered
-        if self.gamma > 0.0:
-            # Calculate new state maxQ
-            next_sate = self.build_state()
-            self.createQ(next_sate)
-            new_maxQ = self.get_maxQ(next_sate)
-
-        newQ = oldQ + self.alpha * (reward + self.gamma * new_maxQ - oldQ)
-
-        self.Q[state][action] = newQ
+        self.Q[state][action] = oldQ + self.alpha * (reward - oldQ)
 
         print '==> epsilon is ' + str(self.epsilon) + ', alpha is ' + str(self.alpha) + ' at step ' + str(self.t)
 
