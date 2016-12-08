@@ -1,0 +1,80 @@
+Question 1
+
+Reasoning:
+- Using modified version of rolling window technique, which will allow us to compare strings in constant time
+- Instead of creating a hash function to compute a hash value for each window and the target value, i used the sum of ASCII
+ code for the characters as my hash function
+
+Validation:
+- t > s => false
+- t is None => false, s is None => false
+- t and s E string
+
+Complexity:
+- Time: O(n)
+- Space: O(1)
+
+--------------------------------------------------------------------------------------------
+Question 2
+
+Reasoning:
+- Using a dynamic programming approach to solve this problem is polynomial time
+- Use a matrix to store all palindromic from size 1 to max size, so we don't have to recompute it each time
+
+Complexity:
+- Time: O(n^2)
+- Space: O(n^2)
+
+Validation:
+- input is empty
+- input is of size 1
+
+--------------------------------------------------------------------------------------------
+Question 3
+
+Reasoning:
+- Using Prim's algorithm to solve the problem, as the brute force technique will be exponential
+- Using heap so we can get access to the min element in constant time, add new element in O(long n) time
+
+Complexity:
+- Time: O(E log V) ==> where E is the # of edges and V is the # of vertexes
+- Space: O(E + V)
+
+Validation:
+- graph is empty
+- graph is disconnected
+
+--------------------------------------------------------------------------------------------
+Question 4
+
+
+Reasoning:
+- The tree is BST then we know that the left is smaller than it's parent and the right node is larger than it's parent.
+- After building the tree we just need to look for the node that is the LCA
+
+Complexity:
+- Time: O(H) ==> where h is the height of the BST
+- Space: O(N)
+
+Validation:
+- T is empty or None
+- r or n1 or n2 is None
+- r or n1 or n2 is larger than the T size
+
+--------------------------------------------------------------------------------------------
+Question 5
+
+Reasoning:
+- We could traverse the linkedlist to count all the nodes and then re traverse again to return the desired node.
+- However, by using the two runner technique we could do this in just one pass
+- and on the average case we may take less as we will only traverse the hole linkedlist only if the m is the same length
+
+
+Complexity:
+- Time: O(N) ==> where n is the length of the linkedlist
+- Space: O(1)
+
+Validation:
+- check linkedlist is not empty
+- and ll is the start node
+- m is smaller than the linkedlist
