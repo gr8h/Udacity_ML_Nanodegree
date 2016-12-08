@@ -1,0 +1,26 @@
+Question 2
+Given a string a, find the longest palindromic substring contained in a.
+Your function definition should look like question2(a), and return a string.
+
+Solution:
+- dynamic programming
+- create a matrix of size n x n
+- for each string of size 1 there will be max palindrome of size 1
+- the for window size 2, if the 1st and last characters are the same
+- check if the the inner characters are the same ==> which is computed from the last tem
+- therefore, we sum the last max palindrome length + 2
+- and check if the length larger that the max len that we reached so far
+- and update the longest substring accordingly
+
+Complexity:
+- Time: O(n^2)
+- Space: O(n^2)
+
+Validation:
+- input is empty
+- input is of size 1
+
+Test cases:
+- "bananas" is "anana"
+- "babad" is "bab"
+- "cbbd" is "bb"

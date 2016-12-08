@@ -1,0 +1,51 @@
+Question 3
+Given an undirected graph G, find the minimum spanning tree within G.
+A minimum spanning tree connects all vertices in a graph with the smallest possible total weight of edges
+
+Solution:
+- Using Prim's algorithm to solve the problem,
+- Comments in the code
+
+Complexity:
+- Time: O(E log V)
+- Space: O(E + V)
+
+Validation:
+- graph is empty
+- graph is disconnected
+
+
+Test cases:
+--------------------------------------------
+Working case
+G = {'A': [('B', 2)],
+     'B': [('A', 2), ('C', 5)],
+     'C': [('B', 5)]}
+
+print question3(G)
+# [('A', 'B'), ('B', 'C')]
+--------------------------------------------
+Working case
+G = dict(A=[('D', 1), ('B', 3)],
+         B=[('A', 3), ('D', 3), ('C', 1)],
+         C=[('B', 1), ('D', 1), ('E', 5), ('F', 4)],
+         D=[('A', 1), ('B', 3), ('C', 1), ('E', 6)],
+         E=[('D', 6), ('C', 5), ('F', 2)],
+         F=[('E', 2), ('C', 4)])
+
+print question3(G)
+# [('A', 'D'), ('D', 'C'), ('C', 'B'), ('C', 'F'), ('F', 'E')]
+--------------------------------------------
+Disconnected graph case
+G = {'A': [('D', 2)],
+     'B': [('E', 2), ('H', 5)],
+     'C': [('F', 5)]}
+
+print question3(G)
+# []
+--------------------------------------------
+Empty case
+G = {}
+
+print question3(G)
+# None

@@ -1,0 +1,56 @@
+Question5:
+Find the element in a singly linked list that's m elements from the end.
+For example, if a linked list has 5 elements, the 3rd element from the end is the 3rd element.
+The function definition should look like question5(ll, m),
+where ll is the first node of a linked list and m is the "mth number from the end".
+You should copy/paste the Node class below to use as a representation of a node in the linked list.
+Return the value of the node at that position.
+
+Solution:
+- Build the linkedlist
+- check linkedlist is not empty and ll is the start node
+- start from the head, create two pointers
+- traverse the first pointer to the length of m,
+- or until the pointer is null which will indicate that m is larger than the linkedlist
+- then, traverse both pointers until the first pointer is null
+- return the second pointer value
+
+
+Complexity:
+- Time: O(N) ==> where n is the length of the linkedlist
+- Space: O(1)
+
+Validation:
+- check linkedlist is not empty
+- and ll is the start node
+- m is smaller than the linkedlist
+
+
+Test cases:
+
+ll = LinkedList()
+ll.addNode(12)
+ll.addNode(8)
+ll.addNode(5)
+ll.addNode(20)
+print ll.question5(Node(20), 3) # 5
+
+ll = LinkedList()
+ll.addNode(20)
+ll.addNode(4)
+ll.addNode(15)
+ll.addNode(35)
+print ll.question5(Node(35), 5) # 35
+
+ll = LinkedList()
+ll.addNode(1)
+ll.addNode(2)
+ll.addNode(3)
+ll.addNode(4)
+ll.addNode(6)
+ll.addNode(5)
+print ll.question5(Node(5), 2) # 2
+
+ll = LinkedList()
+ll.addNode(20)
+print ll.question5(Node(35), 5) # None

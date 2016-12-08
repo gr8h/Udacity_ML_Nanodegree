@@ -1,0 +1,21 @@
+Question 1
+Given two strings s and t, determine whether some anagram of t is a substring of s.
+For example: if s = "udacity" and t = "ad", then the function returns True.
+Your function definition should look like: question1(s, t) and return a boolean True or False.
+
+Solution:
+- rolling window
+- create a window of size t
+- compare the ASCII sum of the created window characters and t to
+- if the two sums are equal, then there exist an anagram of size t in s
+- else remove the first character ASCII from the current window sum and add the next character ASCII
+- repeat util the end of s
+
+Validation:
+- t > s => false
+- t is None => false, s is None => false
+- t and s E string
+
+Complexity:
+- Time: O(n)
+- Space: O(1)
