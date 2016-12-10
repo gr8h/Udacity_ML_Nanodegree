@@ -1,3 +1,35 @@
+"""
+First solution by sorting and comparing each window
+Time: O(n log n)
+Space: O(1)
+"""
+def question1_nlogn(s, t):
+    if not s or not t or s == "" or t == "":
+        return False
+
+    if type(s) != str and type(t) != str:
+        return False
+
+    if len(t) > len(s):
+        return False
+
+    s = s.lower()
+    t = sorted(t.lower())
+    window_size = len(t)
+    num_of_windows = len(s) - len(t) + 1
+
+    for win in range(num_of_windows):
+        current_window = sorted(s[win:win+window_size])
+        if current_window == t:
+            return True
+
+    return False
+
+
+"""
+Second solution by assuming that the string input is ASCII so the max value will be 256,
+The compare a counter by maintaining a window of target input size
+"""
 def question1(s, t):
     if not s or not t or s == "" or t == "":
         return False
@@ -11,36 +43,35 @@ def question1(s, t):
     s = s.lower()
     t = t.lower()
 
-    tt_sum = 0
-    for ch in t:
-        tt_sum += ord(ch)
+    t_count = [0] * 256
+    s_count = [0] * 256
 
-    window_size = len(t)
-    start = 1
-    end = len(s)
+    for i in range(len(t)):
+        t_count[ord(t[i])] += 1
+        s_count[ord(s[i])] += 1
 
-    ss_sum = 0
-    current_window = s[0:window_size]
-    for ch in current_window:
-        ss_sum += ord(ch)
-    if ss_sum == tt_sum:
-        return True
-
-    while start + window_size <= end:
-        ss_remove = ord(s[start-1])
-        ss_add = ord(s[window_size+start-1])
-        ss_sum += ss_add
-        ss_sum -= ss_remove
-
-        if ss_sum == tt_sum:
+    win = len(t)
+    while win <= len(s):
+        if compareCounter(t_count, s_count):
             return True
 
-        start += 1
+        s_count[ord(s[win])] += 1
+        s_count[ord(s[win - len(t)])] -= 1
+        win += 1
 
     return False
 
+def compareCounter(t_count, s_count):
+    return t_count == s_count
+
+    # for i in range(len(t_count)):
+    #     if t_count[i] != s_count[i]:
+    #         return False
+    # return True
+
 
 print question1("udacity", "ad")  # True
+print question1("udacitty", "yt")  # True
 print question1("nAnodegree", "gedo")  # True
 print question1("helloworlD", "dlr")  # True
 print question1("", "xyz")  # False

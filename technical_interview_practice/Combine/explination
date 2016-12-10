@@ -1,9 +1,9 @@
 Question 1
 
 Reasoning:
-- Using modified version of rolling window technique, which will allow us to compare strings in constant time
-- Instead of creating a hash function to compute a hash value for each window and the target value, i used the sum of ASCII
- code for the characters as my hash function
+- Using modified version of rolling window technique,
+- By assuming that the string input is ASCII so the max value will be 256, Then compare a counter by maintaining
+a window of target input size
 
 Validation:
 - t > s => false
@@ -50,11 +50,11 @@ Question 4
 
 Reasoning:
 - The tree is BST then we know that the left is smaller than it's parent and the right node is larger than it's parent.
-- After building the tree we just need to look for the node that is the LCA
+- Therefore, we just need to look for the node that is the LCA, not bigger than both nodes or smaller
 
 Complexity:
-- Time: O(H) ==> where h is the height of the BST
-- Space: O(N)
+- Time: O(log N)
+- Space: O(1)
 
 Validation:
 - T is empty or None

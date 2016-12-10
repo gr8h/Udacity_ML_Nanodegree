@@ -1,3 +1,37 @@
+""" question1 ---------------------------"""
+
+"""
+First solution by sorting and comparing each window
+Time: O(n log n)
+Space: O(1)
+"""
+def question1_nlogn(s, t):
+    if not s or not t or s == "" or t == "":
+        return False
+
+    if type(s) != str and type(t) != str:
+        return False
+
+    if len(t) > len(s):
+        return False
+
+    s = s.lower()
+    t = sorted(t.lower())
+    window_size = len(t)
+    num_of_windows = len(s) - len(t) + 1
+
+    for win in range(num_of_windows):
+        current_window = sorted(s[win:win+window_size])
+        if current_window == t:
+            return True
+
+    return False
+
+
+"""
+Second solution by assuming that the string input is ASCII so the max value will be 256,
+The compare a counter by maintaining a window of target input size
+"""
 def question1(s, t):
     if not s or not t or s == "" or t == "":
         return False
@@ -11,40 +45,35 @@ def question1(s, t):
     s = s.lower()
     t = t.lower()
 
-    tt_sum = 0
-    for ch in t:
-        tt_sum += ord(ch)
+    t_count = [0] * 256
+    s_count = [0] * 256
 
-    # create a window of size t
-    window_size = len(t)
-    start = 1
-    end = len(s)
+    for i in range(len(t)):
+        t_count[ord(t[i])] += 1
+        s_count[ord(s[i])] += 1
 
-    ss_sum = 0
-    current_window = s[0:window_size]
-    for ch in current_window:
-        ss_sum += ord(ch)
-    if ss_sum == tt_sum:
-        return True
-
-    # repeat util the end of s
-    while start + window_size <= end:
-        # remove the first character ASCII from the current window sum and add the next character ASCII
-        ss_remove = ord(s[start-1])
-        ss_add = ord(s[window_size+start-1])
-        ss_sum += ss_add
-        ss_sum -= ss_remove
-        # compare the ASCII sum of the created window characters and t to
-        if ss_sum == tt_sum:
-            # if the two sums are equal, then there exist an anagram of size t in s
+    win = len(t)
+    while win <= len(s):
+        if compareCounter(t_count, s_count):
             return True
 
-        start += 1
+        s_count[ord(s[win])] += 1
+        s_count[ord(s[win - len(t)])] -= 1
+        win += 1
 
     return False
 
+def compareCounter(t_count, s_count):
+    return t_count == s_count
+
+    # for i in range(len(t_count)):
+    #     if t_count[i] != s_count[i]:
+    #         return False
+    # return True
+
 
 print question1("udacity", "ad")  # True
+print question1("udacitty", "yt")  # True
 print question1("nAnodegree", "gedo")  # True
 print question1("helloworlD", "dlr")  # True
 print question1("", "xyz")  # False
@@ -53,11 +82,11 @@ print question1("", "")  # False
 print question1(None, None)  # False
 print question1(123, 456)  # False
 
-'''---------------------------'''
+
+""" question2 ---------------------------"""
 
 
 def question2(a):
-
     if not a:
         return None
 
@@ -75,37 +104,37 @@ def question2(a):
         tbl[i][i] = 1
 
     for i in range(1, n):
-        for k in range(n-i):
+        for k in range(n - i):
             x = k
-            y = k+i
+            y = k + i
 
             # check if the the outer characters are the same
             if a[x] == a[y]:
                 # we sum the last max palindrome length + 2
-                tbl[x][y] = 2 + tbl[x+1][y-1]
+                tbl[x][y] = 2 + tbl[x + 1][y - 1]
                 # if the length larger that the max len that we reached so far
-                if w < y-x+1:
-                    w = x-y+1
+                if w < y - x + 1:
+                    w = x - y + 1
                     # update the longest substring accordingly
-                    res = a[x: y+1]
+                    res = a[x: y + 1]
             else:
                 # select the max palindrome so far
-                tbl[x][y] = max(tbl[x-1][y], tbl[x][y-1])
+                tbl[x][y] = max(tbl[x - 1][y], tbl[x][y - 1])
     return res
+
 
 print question2("bananas")
 print question2("babad")
 print question2("cbbd")
 print question2("xyzqwer")
 
-'''---------------------------'''
+""" question3 ---------------------------"""
 
 import heapq
 import sys
 
 
 def question3(G, start=None):
-
     if not G or G == [[]]:
         return
 
@@ -188,58 +217,54 @@ G = {}
 print question3(G)
 # []
 
-'''---------------------------'''
+""" question4 ---------------------------"""
 
-class Node:
-    # Constructor to create a new node
-    def __init__(self, value):
-        self.value = value
-        self.left = None
-        self.right = None
-
-
-def buildTreeNodes(T, node):
+def get_left_child(T, node):
     n = len(T)
+    row = T[node]
     for i in range(n):
-        row = T[node.value]
-        if row[i] == 1:
-            if i > node.value:
-                node.right = i
-                buildTreeNodes(T, Node(i))
-            if i < node.value:
-                node.left = i
-                buildTreeNodes(T, Node(i))
+        if row[i] == 1 and i < node:
+            return i
+    return None
+
+
+def get_right_child(T, node):
+    n = len(T)
+    row = T[node]
+    for i in range(n):
+        if row[i] == 1 and i > node:
+            return i
+    return None
 
 
 def least_common_ancestor(parent, node1_val, node2_val):
+    left = get_left_child(T, parent)
+    right = get_right_child(T, parent)
 
-    if not parent.left or not parent.right:
+    if left is None or right is None:
         return None
-    # Start form the root node, check if the parent node value is greater than both child node values
-    if parent.value > node1_val and parent.value > node2_val:
+
+    if parent > node1_val and parent > node2_val:
         # if parent larger than both nodes, then we should reduce (go left)
-        return least_common_ancestor(parent.left, node1_val, node2_val)
-    elif parent.value < node1_val and parent.value < node2_val:
+        return least_common_ancestor(left, node1_val, node2_val)
+    elif parent < node1_val and parent < node2_val:
         # if parent larger than both nodes, then we should reduce (go left)
-        return least_common_ancestor(parent.right, node1_val, node2_val)
+        return least_common_ancestor(right, node1_val, node2_val)
 
     return parent
 
 
 def question4(T, r, n1, n2):
-    if not T or T == [[]] or not r or not n1 or not n2:
+    if not T or T == [[]]:
         return
 
     n = len(T)
     if r >= n or n1 >= n or n2 > n:
         return
 
-    parent_node = Node(r)
-    buildTreeNodes(T, parent_node)
+    lca = least_common_ancestor(r, n1, n2)
 
-    lca = least_common_ancestor(parent_node, n1, n2)
-
-    return lca.value
+    return lca
 
 
 T = [[0, 1, 0, 0, 0],
@@ -249,22 +274,53 @@ T = [[0, 1, 0, 0, 0],
      [0, 0, 0, 0, 0]]
 print question4(T, 3, 1, 4) # 3
 
-T = [[0, 1, 0, 0],
-     [0, 0, 1, 0],
-     [0, 0, 0, 1],
-     [0, 0, 0, 0]]
-print question4(T, 1, 1, 3) # 1
+T = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
+     [0, 0, 0, 0, 0, 1, 0, 0, 1],
+     [0, 1, 0, 1, 0, 0, 0, 0, 0],
+     [1, 0, 0, 0, 0, 0, 1, 0, 0],
+     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+     [0, 0, 0, 0, 1, 0, 0, 0, 0],
+     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+     [0, 0, 0, 0, 0, 0, 0, 1, 0]]
+print question4(T, 2, 5, 0)
+
 
 T = [[0, 1, 0, 0, 0, 0, 0],
      [0, 0, 0, 0, 0, 0, 0],
      [0, 0, 0, 0, 0, 0, 0],
      [0, 0, 0, 0, 0, 0, 0],
      [0, 0, 0, 0, 0, 0, 0],
-     [1, 0, 0, 1, 0, 0, 0],
+     [1, 0, 0, 0, 0, 0, 1],
      [0, 0, 0, 0, 0, 0, 0]]
 print question4(T, 5, 1, 6)  # 5
 
-'''---------------------------'''
+T = [[0, 1, 0, 0, 0, 0, 1, 0, 0],
+     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+     [0, 0, 1, 0, 0, 0, 0, 0, 1],
+     [0, 0, 0, 0, 1, 0, 0, 0, 0],
+     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+     [0, 0, 0, 0, 0, 0, 0, 1, 0]]
+print question4(T, 5, 1, 3)  # None
+
+T = [[1, 1, 0, 0, 0, 0, 0, 0, 0],
+     [1, 0, 1, 0, 0, 0, 0, 0, 0],
+     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+     [0, 1, 0, 0, 0, 0, 0, 0, 1],
+     [0, 0, 0, 0, 1, 0, 0, 0, 0],
+     [0, 0, 0, 0, 0, 0, 0, 0, 0],
+     [0, 0, 0, 0, 0, 0, 0, 1, 0]]
+print question4(T, 5, 1, 3)  # 1
+
+
+
+""" question5 ---------------------------"""
+
 
 class Node(object):
     def __init__(self, data):
@@ -306,19 +362,20 @@ class LinkedList:
 
         return slow.data
 
+
 ll = LinkedList()
 ll.addNode(12)
 ll.addNode(8)
 ll.addNode(5)
 ll.addNode(20)
-print ll.question5(Node(20), 3) # 5
+print ll.question5(Node(20), 3)  # 5
 
 ll = LinkedList()
 ll.addNode(20)
 ll.addNode(4)
 ll.addNode(15)
 ll.addNode(35)
-print ll.question5(Node(35), 5) # 35
+print ll.question5(Node(35), 5)  # 35
 
 ll = LinkedList()
 ll.addNode(1)
@@ -327,9 +384,8 @@ ll.addNode(3)
 ll.addNode(4)
 ll.addNode(6)
 ll.addNode(5)
-print ll.question5(Node(5), 2) # 2
+print ll.question5(Node(5), 2)  # 2
 
 ll = LinkedList()
 ll.addNode(20)
-print ll.question5(Node(35), 5) # None
-
+print ll.question5(Node(35), 5)  # None
