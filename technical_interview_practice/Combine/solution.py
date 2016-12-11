@@ -3,8 +3,10 @@
 """
 First solution by sorting and comparing each window
 Time: O(n log n)
-Space: O(1)
+Space: O(n)
 """
+
+
 def question1_nlogn(s, t):
     if not s or not t or s == "" or t == "":
         return False
@@ -16,12 +18,12 @@ def question1_nlogn(s, t):
         return False
 
     s = s.lower()
-    t = sorted(t.lower())
+    t = sorted(t.lower())  # Time Complexity O(n log n)
     window_size = len(t)
     num_of_windows = len(s) - len(t) + 1
 
     for win in range(num_of_windows):
-        current_window = sorted(s[win:win+window_size])
+        current_window = sorted(s[win:win+window_size])  # Space Complexity is O(n) where n is the window size length
         if current_window == t:
             return True
 
@@ -31,7 +33,11 @@ def question1_nlogn(s, t):
 """
 Second solution by assuming that the string input is ASCII so the max value will be 256,
 The compare a counter by maintaining a window of target input size
+Time: O(n)
+Space: O(1)
 """
+
+
 def question1(s, t):
     if not s or not t or s == "" or t == "":
         return False
@@ -62,6 +68,7 @@ def question1(s, t):
         win += 1
 
     return False
+
 
 def compareCounter(t_count, s_count):
     return t_count == s_count
@@ -219,6 +226,7 @@ print question3(G)
 
 """ question4 ---------------------------"""
 
+
 def get_left_child(T, node):
     n = len(T)
     row = T[node]
@@ -237,9 +245,14 @@ def get_right_child(T, node):
     return None
 
 
+"""
+By using recursive approach the space complexity is O(n) where n is the number of calls we make to the function
+"""
+
+
 def least_common_ancestor(parent, node1_val, node2_val):
-    left = get_left_child(T, parent)
-    right = get_right_child(T, parent)
+    left = get_left_child(T, parent)  # O(n)
+    right = get_right_child(T, parent)  # O(n)
 
     if left is None or right is None:
         return None
@@ -253,6 +266,31 @@ def least_common_ancestor(parent, node1_val, node2_val):
 
     return parent
 
+"""
+By using iterative approach we reduced the space complexity to be O(1)
+"""
+
+
+def least_common_ancestor_itr(parent, node1_val, node2_val):
+
+    while True:
+        left = get_left_child(T, parent)  # O(n)
+        right = get_right_child(T, parent)  # O(n)
+
+        if left is None or right is None:
+            return None
+
+        if parent > node1_val and parent > node2_val:
+            # if parent larger than both nodes, then we should reduce (go left)
+            parent = left
+        elif parent < node1_val and parent < node2_val:
+            # if parent larger than both nodes, then we should reduce (go left)
+            parent = right
+        else:
+            break
+
+    return parent
+
 
 def question4(T, r, n1, n2):
     if not T or T == [[]]:
@@ -262,7 +300,7 @@ def question4(T, r, n1, n2):
     if r >= n or n1 >= n or n2 > n:
         return
 
-    lca = least_common_ancestor(r, n1, n2)
+    lca = least_common_ancestor_itr(r, n1, n2)
 
     return lca
 
@@ -283,7 +321,7 @@ T = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
      [0, 0, 0, 0, 1, 0, 0, 0, 0],
      [0, 0, 0, 0, 0, 0, 0, 0, 0],
      [0, 0, 0, 0, 0, 0, 0, 1, 0]]
-print question4(T, 2, 5, 0)
+print question4(T, 2, 5, 0) # 2
 
 
 T = [[0, 1, 0, 0, 0, 0, 0],
@@ -316,7 +354,6 @@ T = [[1, 1, 0, 0, 0, 0, 0, 0, 0],
      [0, 0, 0, 0, 0, 0, 0, 0, 0],
      [0, 0, 0, 0, 0, 0, 0, 1, 0]]
 print question4(T, 5, 1, 3)  # 1
-
 
 
 """ question5 ---------------------------"""
