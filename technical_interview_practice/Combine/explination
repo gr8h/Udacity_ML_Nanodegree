@@ -53,7 +53,10 @@ Reasoning:
 - Therefore, we just need to look for the node that is the LCA, not bigger than both nodes or smaller
 
 Complexity:
-- Time: O(log N)
+- Time:
+    - O(h) time where h is the height of the tree. In the worst case O(h) is equivalent to O(n) if the tree is balancedO(log(n))
+    - and get_left_child method takes O(n), therefore, he over all complexity if the tree is balanced is : O(n log(n))
+    - However, for the worst case when the tree is unbalanced the complexity is O(n^2)
 - Space: O(1)
 
 Validation:
