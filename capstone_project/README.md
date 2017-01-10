@@ -7,6 +7,9 @@ Jan 9th, 2017
 ## Software and libraries
 Scikit-learn, Numpy, Panda, Jupyter Notebook
 
+## Python code in a ipynb notebook format
+ * https://github.com/gr8h/Udacity_ML_Nanodegree/blob/master/capstone_project/House_Prices_Project.ipynb
+
 ## References
  * https://www.kaggle.com/c/house-prices-advanced-regression-techniques
  * https://www.kaggle.com/xchmiao/house-prices-advanced-regression-techniques/detailed-data-exploration-in-python
@@ -16,6 +19,7 @@ Scikit-learn, Numpy, Panda, Jupyter Notebook
  * https://www.kaggle.com/apapiu/house-prices-advanced-regression-techniques/regularized-linear-models
  * https://www.kaggle.com/juliencs/house-prices-advanced-regression-techniques/a-study-on-regression-applied-to-the-ames-dataset/
  * https://www.analyticsvidhya.com/blog/2016/01/complete-tutorial-ridge-lasso-regression-python/
+ * http://blog.datadive.net/selecting-good-features-part-i-univariate-selection/
 
 ## Dataset
  https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data
